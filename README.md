@@ -1,0 +1,2 @@
+# njs
+my nodejs project
