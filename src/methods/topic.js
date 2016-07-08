@@ -40,6 +40,7 @@ module.exports = function(done){
    	const ret=$.model.Topic.find(query,{
    		authorId:1,
    		title:1,
+      content:1,
    		tags:1,
    		createdAt:1,
    		updatedAt:1,

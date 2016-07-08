@@ -24,7 +24,7 @@ module.exports = {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
                 loader: 'url?limit=10000&mimetype=image/svg+xml'
             }, {
-                test: /\.js?$/,
+                test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel', // 'babel-loader' is also a legal name to reference 
                 query: {
