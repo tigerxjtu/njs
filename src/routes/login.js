@@ -32,14 +32,14 @@ module.exports = function(done){
   });
 
  $.router.post('/api/logout',async function(req, res, next){
- 	console.log('logout');
+/* 	console.log('logout');
     if (req.session.logout_token && req.query.token!=req.session.logout_token){
     	return next(new Error('invalid token'));
     }
-
+*/
     delete req.session.user;
     delete req.session.logout_token;
-    console.log('logouted');
+   // console.log('logouted');
     res.apiSuccess({});
   });
 

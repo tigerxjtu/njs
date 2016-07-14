@@ -28,10 +28,21 @@ module.exports = function(done){
   });
 
   $.router.get('/api/topic/item/:topic_id',async function(req, res, next){
- 	const topic=await $.method('topic.get').call({_id:req.params.topic_id});
+ 	var topic=await $.method('topic.get').call({_id:req.params.topic_id});
  	if (!topic) return next(new Error('topic not found'));
+  const userId = req.session.user && req.session.user._id && req.session.user._id.toString();
+  topic.canEdit= (userId === (topic.authorId&&topic.authorId.toString()));
+  
+  /*console.log(userId);
+  console.log(topic.authorId);
+  console.log(userId === (topic.authorId&&topic.authorId.toString()));
+  console.log(topic.canEdit);
+  console.log(topic);*/
+  var t={};
+  t= $.utils.cloneObject(topic);
+  t.canEdit= (userId === (topic.authorId&&topic.authorId.toString()));
 
- 	res.apiSuccess({topic:topic});
+ 	res.apiSuccess({topic:t});
   });
 
   $.router.post('/api/topic/item/:topic_id',$.checkLogin, $.checkTopicAuthor,async function(req,res,next){
