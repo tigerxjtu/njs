@@ -46,9 +46,12 @@ export default class Header extends React.Component{
 					      {this.state.user ?(
 					      	<li><a onClick={this.handleLogout.bind(this)}>注销[{this.state.user.nickname}]</a></li>
 					      	):(
-					      	<li><a href="/login">登录</a></li>)
+					      	<li><Link to="/login">登录</Link></li>)
 					      }
-					        
+					      {this.state.user ? null:
+					      	(
+					      	<li><Link to="/signup">注册</Link></li>)
+					      } 
 					        
 					      </ul>
 					    </div>

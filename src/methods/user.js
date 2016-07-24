@@ -14,7 +14,7 @@ module.exports = function(done){
   });
 
   $.method('user.add').register(async function(params){
-  	console.log('save user');
+  	//console.log('save user');
   	params.name=params.name.toLowerCase();
   	{
 	  	const user=await $.method('user.get').call({name:params.name});
@@ -32,11 +32,12 @@ module.exports = function(done){
   });
 
   $.method('user.get').register(async function(params){
+   // console.log(params);
   	const query={};
   	if (params._id){
   		query._id=params._id;
   	}
-  	if (params.name){
+  	else if (params.name){
   		query.name=params.name;
   	}else if(params.email){
   		query.email=params.email;
@@ -44,6 +45,8 @@ module.exports = function(done){
   		//return callback(new Error('missing parameter _id|name|email'));
   		return undefined;
   	}
+
+    //console.log(query);
 
   	//$.model.User.findOne(query, callback);
   	return $.model.User.findOne(query);

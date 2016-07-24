@@ -41,6 +41,12 @@ module.exports = function(done){
   var t={};
   t= $.utils.cloneObject(topic);
   t.canEdit= (userId === (topic.authorId&&topic.authorId.toString()));
+  t.author=await $.method('user.get').call({_id:topic.authorId});
+  if (t.comments){
+    for (const item of t.comments){
+        item.user = await $.method('user.get').call({_id:item.authorId});
+    }
+  }
 
  	res.apiSuccess({topic:t});
   });
@@ -72,7 +78,7 @@ module.exports = function(done){
   });
 
 
-  $.router.delete('/api/topic/item/:topic_id/comment/delete',$.checkLogin,async function(req,res,next){
+  $.router.post('/api/topic/item/:topic_id/comment/delete',$.checkLogin,async function(req,res,next){
   	req.body._id=req.params.topic_id;
   	
   	const query={

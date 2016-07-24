@@ -58,6 +58,10 @@ export function signup(name, email, password, nickname) {
   return request('post', 'signup', {name, email, password, nickname});
 }
 
+export function getUserById(id){
+  return request('get',`user/${id}`).then(ret=>ret.user);
+}
+
 export function addTopic(title, tags, content) {
   return request('post', 'topic/add', {title, tags, content}).then(ret => ret.topic);
 }

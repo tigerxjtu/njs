@@ -49,6 +49,16 @@ module.exports = function(done){
     res.apiSuccess({user:user});
   });
 
+  $.router.get('/api/user/:user_id',async function(req, res, next){
+  	const user=await $.method('user.get').call({_id:req.params.user_id});
+
+  	if (user){
+  		res.apiSuccess({user:user});
+  	}else{
+  		return next(new Error('user not found'));
+  	}
+  });
+
   done();
   //console.log('end router...');
 }
