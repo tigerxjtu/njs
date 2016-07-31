@@ -10,7 +10,7 @@ module.exports = function (done){
   const Schema=mongoose.Schema;
   const ObjectId=Schema.ObjectId;
   var Topic= new Schema({
-    authorId: {type:ObjectId, index:true},
+    authorId: {type:ObjectId, index:true, ref:'User'},
     title: {type:String, trim:true},
     content:{type:String},
     tags:{type:String,index:true},

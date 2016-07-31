@@ -69,6 +69,8 @@ export default class TopicDetail extends React.Component{
 		return (
 			<div>
 				<h2>{topic.title}</h2>
+				<p>{topic.author.nickname} 发表于 {topic.createdAt}</p>
+        		<p>标签：{topic.tags.join(', ')}</p>
 				<hr />
 				<section dangerouslySetInnerHTML={{__html: topic.html}}></section>
 				<CommentEditor

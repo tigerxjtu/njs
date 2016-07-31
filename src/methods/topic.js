@@ -54,6 +54,21 @@ module.exports = function(done){
    	return ret;
    });
 
+   $.method('topic.count').check({
+    authorId:{validate:(v)=>validator.isMongoId(String(v))},
+    tags:{validate:(v)=>Array.isArray(v)}
+  });
+   $.method('topic.count').register(async function(params){
+    const query={};
+    if (params.authorId) query.authorId=params.authorId;
+    if (params.tags) query.tags={$all:params.tags};
+    //console.log(query);
+    const ret=$.model.Topic.count(query);
+
+
+    return ret;
+   });
+
 
    $.method('topic.get').check({
     _id:{required: true, validate:(v)=>validator.isMongoId(String(v))}
