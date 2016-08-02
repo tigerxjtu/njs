@@ -14,7 +14,9 @@ module.exports = function (done){
     email: {type:String, unique:true},
     password:{type:String},
     nickname:{type:String},
-    about:{type:String}
+    about:{type:String},
+    isAdmin:{type:Boolean},
+    score:{type:Number}
   });
 
   $.mongodb.model('User',User);

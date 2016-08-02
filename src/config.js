@@ -16,4 +16,11 @@ module.exports = function (set,get,has){
   	host: '192.168.99.100',
   	port: 32768
   });
+
+ //limit redis connection
+ set('limiter.redis',{
+ 	host: '192.168.99.100',
+  	port: 32768,
+  	prefix: 'L:'
+ });
 }

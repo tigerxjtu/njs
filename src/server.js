@@ -54,6 +54,9 @@ $.init.load(path.resolve(__dirname,'routes'));
 //load methods
 $.init.load(path.resolve(__dirname,'methods'));
 
+//初始化limiter
+$.init.load(path.resolve(__dirname,'init','limiter.js'));
+
 //init
 $.init((err)=>{
   debug('init end');

@@ -53,7 +53,7 @@ module.exports = function(done){
   });
 
   $.method('user.update').check({
-  	_id:{validate:(v)=>validator.isMongoId(v)},
+  	_id:{validate:(v)=>validator.isMongoId(v),required:true},
     name:{required: true, validate:(v)=>validator.isLength(v,{min:4,max:20}) && /^[a-zA-Z]/.test(v)},
     email:{required: true, validate:(v)=>validator.isEmail(v)}
   });
@@ -73,6 +73,17 @@ module.exports = function(done){
 
   	return $.model.User.update({_id:user._id},{$set:update});
   	
+  });
+
+  $.method('user.incrScore').check({
+    _id:{validate:(v)=>validator.isMongoId(v),required:true},
+    score:{validate:(v)=>!isNaN(v), required: true}
+  });
+
+  $.method('user.incrScore').register(async function(params){
+
+    return $.model.User.update({_id:params._id},{$inc:{score:params.score}});
+    
   });
 
   done();

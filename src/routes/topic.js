@@ -11,18 +11,26 @@ module.exports = function(done) {
             req.body.authorId = req.session.user._id;
 
             //发帖限制
-            const key=$.utils.date('YmdH');
+            /*const key=$.utils.date('YmdH');
             const count=req.session[key];
             if (count && count>=2){
                 throw new Error('publishing too much topics, please tries later');
             }else{
                 req.session[key] = count?count+1:1;
+            }*/
+            {
+                const key = `addtopic:${req.body.authorId}:${$.utils.date('YmdH')}`;
+                const limit =2;
+                const ok = await $.limiter.incr(key);
+                if (!ok) throw new Error('too much add topics');
             }
 
             if ('tags' in req.body) {
                 req.body.tags = req.body.tags.split(',').map(v => v.trim()).filter(v => v);
             }
             const topic = await $.method('topic.add').call(req.body);
+
+            await $.method('user.incrScore').call({_id:req.body.authorId,score:5});
 
             res.apiSuccess({
                 topic: topic
@@ -87,6 +95,8 @@ module.exports = function(done) {
                 }
             }
 
+            await $.method('topic.incrPageView').call({_id:req.params.topic_id});
+
             res.apiSuccess({
                 topic: t
             });
@@ -121,8 +131,16 @@ module.exports = function(done) {
 
             req.body._id = req.params.topic_id;
             req.body.authorId = req.session.user._id;
+            //评论限制
+            {
+                const key = `addcomment:${req.body.authorId}:${$.utils.date('YmdH')}`;
+                const limit =20;
+                const ok = await $.limiter.incr(key);
+                if (!ok) throw new Error('out of limits');
+            }
             const comment = await $.method('topic.comment.add').call(req.body);
 
+            await $.method('user.incrScore').call({_id:req.body.authorId,score:1});
             res.apiSuccess({
                 comment
             });

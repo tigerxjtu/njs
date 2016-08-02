@@ -22,7 +22,8 @@ module.exports = function (done){
       authorId:ObjectId,
       content:String,
       createdAt:Date
-    }]
+    }],
+    pageView:{type:Number}
   });
 
   $.mongodb.model('Topic',Topic);

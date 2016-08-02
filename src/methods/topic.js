@@ -45,7 +45,8 @@ module.exports = function(done){
    		createdAt:1,
    		updatedAt:1,
    		comments:1,
-   		lastCommentedAt:1
+   		lastCommentedAt:1,
+      pageView:1
    	});
 
    	if (params.skip) ret.skip(Number(params.skip));
@@ -95,7 +96,6 @@ module.exports = function(done){
     tags:{validate:(v)=>Array.isArray(v)}
     
   });
-
   $.method('topic.update').register(async function(params){
   	const topic= await $.method('topic.get').call(params);
   	if (!topic){
@@ -112,6 +112,15 @@ module.exports = function(done){
   	
   });
 
+  $.method('topic.incrPageView').check({
+    _id:{required: true, validate:(v)=>validator.isMongoId(String(v))}   
+  });
+  $.method('topic.incrPageView').register(async function(params){
+
+    return $.model.Topic.update({_id:params._id},{$inc:{pageView:1}});
+    
+  });
+
    $.method('topic.comment.add').check({
   	_id:{required: true, validate:(v)=>validator.isMongoId(String(v))},
     authorId:{required: true,validate:(v)=>validator.isMongoId(String(v))},
@@ -121,11 +130,25 @@ module.exports = function(done){
   $.method('topic.comment.add').register(async function(params){
 
   	const comment ={
-  		cid: new $.utils.ObjectId(),
+  		//cid: new $.utils.ObjectId(),
   		authorId: params.authorId,
   		content: params.content,
   		createdAt: new Date()
   	}; 
+
+    const topic = await $.method('topic.get').call({_id:params._id});
+    if (!topic){
+      throw new Error('topic not found');
+    }
+    await $.method('notification.add').call({
+      from : params.authorId,
+      to: topic.authorId,
+      type: 'topic_comment',
+      data:{
+        _id: params._id,
+        title: topic.title
+      }
+    });
   	
 
   	return $.model.Topic.update({_id:params._id},{$push:{comments:comment}});
