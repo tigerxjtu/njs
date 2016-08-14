@@ -149,6 +149,19 @@ module.exports = function(done){
         title: topic.title
       }
     });
+
+    const fromUser=await $.method('user.get').call({_id:prams.authorId});
+    const toUser=await $.method('user.get').call({_id:topic.authorId});
+    $.method('mail.sendTemplate').call({
+      to: toUser.email,
+      subject: `有人回复了你发表的主题《${topic.title}》`,
+      template:'reply',
+      data:{
+        topic:topic,
+        content:params.content,
+        user: fromUser
+      }
+    });
   	
 
   	return $.model.Topic.update({_id:params._id},{$push:{comments:comment}});

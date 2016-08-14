@@ -82,6 +82,10 @@ export function updateProfile(email, nickname, about) {
   return request('post', 'user/profile', {email, nickname, about});
 }
 
+export function unbindGithub(id){
+	return request('get',`/user/${id}/unbindGithub`);
+}
+
 export function deleteTopic(id) {
   return request('delete', `topic/item/${id}/`);
 }
@@ -96,4 +100,12 @@ export function notificationList() {
 
 export function notificationSetRead(id) {
   return request('post', `notification/${id}/read`);
+}
+
+export function requestResetPassword(email) {
+  return request('post', '/user/request_reset_password', {email});
+}
+
+export function resetPassword(code, email, password) {
+  return request('post', '/user/reset_password', {code, email, password});
 }

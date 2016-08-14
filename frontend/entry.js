@@ -14,6 +14,7 @@ import NewTopic from './component/NewTopic';
 import EditTopic from './component/EditTopic';
 import Profile from './component/Profile';
 import Notification from './component/Notification';
+import ResetPassword from './component/ResetPassword';
 
 /*import {getTopicList} from './lib/client';*/
 /*
@@ -33,6 +34,7 @@ ReactDOM.render((
 	      	<Route path="topic/:id/edit" component={EditTopic}/>
 	      	<Route path="login" component={Login}/>
 	      	<Route path="signup" component={Signup}/>
+	      	<Route path="reset_password" component={ResetPassword}/>
 	      	<Route path="profile" component={Profile}/>
 	      	<Route path="notification" component={Notification}/>
 	      </Route>					    

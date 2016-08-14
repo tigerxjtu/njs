@@ -41,7 +41,9 @@ module.exports = function(done){
   		query.name=params.name;
   	}else if(params.email){
   		query.email=params.email;
-  	}else{
+  	}else if(params.githubUserName){
+      query.githubUserName=params.githubUserName;
+    }else{
   		//return callback(new Error('missing parameter _id|name|email'));
   		return undefined;
   	}
@@ -67,9 +69,10 @@ module.exports = function(done){
   	const update={};
   	if (params.name && user.name!==params.name) update.name=params.name;
   	if (params.email && user.email!==params.email) update.email=params.email;
-  	if (params.password) update.password=user.password;
-  	if (params.nickname) update.nickname=user.nickname;
+  	if (params.password) update.password=$.utils.encryptPassword(params.password);
+  	if (params.nickname) update.nickname=params.nickname;
   	if (params.about) update.about=params.about;
+    if (params.githubUserName) update.githubUserName=params.githubUserName;
 
   	return $.model.User.update({_id:user._id},{$set:update});
   	

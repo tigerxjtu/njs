@@ -2,7 +2,7 @@ import React from 'react';
 import jQuery from 'jquery';
 import {redirectUrl} from '../lib/utils';
 
-import {loginUser, updateProfile} from '../lib/client';
+import {loginUser, updateProfile, unbindGithub} from '../lib/client';
 
 export default class Profile extends React.Component{
 	constructor(props){
@@ -38,8 +38,25 @@ export default class Profile extends React.Component{
 		});
 	}
 
-	render(){
+	handleUnbind(e){
+		const $btn=jQuery(e.target);
+		$btn.button('loading');
+		unbindGithub(this.state._id)
+		.then(ret=>{
+			$btn.button('reset');
+			console.log(ret);
+			alert('修改成功！');
+			//location.replace('/');
+			redirectUrl('/');
+		})
+		.catch(err => {
+			$btn.button('reset');
+			alert(err);
+		});
+	}
 
+	render(){
+		const isBind=this.state.githubUserName? true:false;
 		return (
 			<div style={{width:400, margin:'auto'}}>
 				<div className="panel panel-primary">
@@ -58,8 +75,13 @@ export default class Profile extends React.Component{
 		                <label htmlFor="inputAbout">个人介绍</label>
 		                <textarea className="form-control" id="inputAbout" onChange={this.handleChange.bind(this, 'about')} placeholder="">{this.state.about}</textarea>
 		              </div>
-					  
+					  <div className="form-group">
+					    <label>github账号</label>
+					    <p class="form-control-static">{this.state.githubUserName}</p>
+					  </div>
 					  <button type="button" className="btn btn-primary" onClick={this.handleSave.bind(this)}>保存</button>
+					  &nbsp;
+					   {!isBind ? null : <button type="button" className="btn btn-info" onClick={this.handleUnbind.bind(this)}>取消Github账号绑定</button>}
 					</form>
 				  </div>
 				</div>
