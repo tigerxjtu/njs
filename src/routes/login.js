@@ -19,7 +19,7 @@ module.exports = function(done){
        //登录限制
        const key = `login:${req.body.name}:${$.utils.date('Ymd')}`;
       {
-          //const ip = req.headers['x-forwarder-for']||req.connection.remoteAddress;   
+          const ip = req.headers['x-forwarder-for']||req.connection.remoteAddress;   
           const key = `login:${ip}:${$.utils.date('Ymd')}`;
           const limit =5;
           const ok = await $.limiter.incr(key);

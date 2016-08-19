@@ -13,7 +13,7 @@ module.exports = function (done){
     authorId: {type:ObjectId, index:true, ref:'User'},
     title: {type:String, trim:true},
     content:{type:String},
-    tags:{type:String,index:true},
+    tags:[{type:String,index:true}],
     createdAt:{type:Date,index:true},
     updatedAt:{type:Date,index:true},
     lastCommentedAt:{type:Date,index:true},

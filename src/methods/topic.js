@@ -150,7 +150,7 @@ module.exports = function(done){
       }
     });
 
-    const fromUser=await $.method('user.get').call({_id:prams.authorId});
+    const fromUser=await $.method('user.get').call({_id:params.authorId});
     const toUser=await $.method('user.get').call({_id:topic.authorId});
     $.method('mail.sendTemplate').call({
       to: toUser.email,
