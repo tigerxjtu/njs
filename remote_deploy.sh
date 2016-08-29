@@ -1,0 +1,1 @@
+ssh user@host "cd ~/njs && git reset HEAD --hard && git pull && npm install && npm run start"
